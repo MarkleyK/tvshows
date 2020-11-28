@@ -1,18 +1,39 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="app" class="container">
+    <Header msg="Welcome to Your Vue.js App"/>
+    <Tvshows v-bind:shows = "tvshows"></Tvshows>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import axios from 'axios'
+import Header from './components/Header.vue'
+import Tvshows from './components/Tvshows.vue'
+import 'bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    Header,
+    Tvshows
+    
+  },
+  data()
+  {
+    return{
+      tvshows : []
+    }
+  },
+  mounted()
+  {
+    axios.get(' https://api.themoviedb.org/3/tv/popular?api_key=70ef7c62eee1244489c96681175a2a0f&language=en-US&page=1')
+    .then((res) => {
+      this.tvshows = (res.data.results).slice(0,4)
+    })
   }
+
 }
 </script>
 
